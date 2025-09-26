@@ -1,0 +1,247 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weral Greenfield</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background-color: #4CAF50; color: white; text-align: center; padding: 1em; }
+        nav { background-color: #333; overflow: hidden; }
+        nav a { float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; }
+        nav a:hover { background-color: #ddd; color: black; }
+        section { padding: 20px; margin: 20px; }
+        img { max-width: 100%; height: auto; }
+        .gallery img { width: 200px; margin: 10px; }
+        footer { background-color: #333; color: white; text-align: center; padding: 10px; }
+        form { display: flex; flex-direction: column; max-width: 400px; }
+        input, textarea, button { margin: 10px 0; padding: 10px; }
+        button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Weral Greenfield</h1>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#our-story">Our Story</a>
+        <a href="#challenge">The Challenge</a>
+        <a href="#solution">Our Solution</a>
+        <a href="#market">Market Opportunity</a>
+        <a href="#business">Business Model</a>
+        <a href="#team">Team & Impact</a>
+        <a href="#financials">Financials</a>
+        <a href="#future">Future Plans</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="home">
+        <h2>Welcome to Weral Greenfield</h2>
+        <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/WhatsApp-Image-2025-08-12-at-1.55.35-PM-768x1152.jpeg" alt="Weral Greenfield Farm">
+        <p>Welcome to Weral Greenfield, a pioneering youth-led agricultural startup committed to reshaping farming in The Gambia. Founded in 2025 by Fatoumatta Touray, a 20-year-old visionary from the farming community of Banyaaka, Weral Greenfield is more than a farm—it is a mission to create lasting solutions for water scarcity, low productivity, and food insecurity.</p>
+        <p>Our core innovation is a solar-powered automated drip irrigation system, designed to reduce water waste, cut energy costs, and make farming more productive and resilient in a changing climate. By combining renewable energy, smart farming practices, and community-driven values, we are building a pathway to food security, youth empowerment, and sustainable growth in The Gambia and beyond.</p>
+        <p>From our humble pilot farm, we have already produced cucumbers, green peppers, and tomatoes that generated income for the business while proving that green technology can thrive in local agriculture. As we expand, our goal is simple: to transform farmlands into green fields of prosperity for smallholder farmers, families, and communities.</p>
+        <p>Whether you are a farmer seeking affordable irrigation, an investor looking for high-impact opportunities, or a partner who believes in climate-smart solutions, you are welcome to join us in this journey. Together, let’s grow a future where every drop of water counts, every harvest sustains, and every innovation uplifts communities.</p>
+        <a href="#contact">Contact Us</a>
+    </section>
+
+    <section id="our-story">
+        <h2>Our Story / About Us</h2>
+        <p>Weral Greenfield was born from a deep connection to the land. Growing up in Banyaaka, Fatoumatta Touray witnessed the struggles of smallholder farmers: crops withering under erratic rainfall, high fuel costs draining household incomes, and the constant fear of food shortages. She saw women and youth working tirelessly, only to yield little because of outdated irrigation systems that wasted up to 70% of water.</p>
+        <p>Determined to change this narrative, Fatoumatta invested her savings of D570,000 to establish Weral Greenfield’s pilot farm in early 2025. With bold courage, she introduced solar-powered automated drip irrigation—a system that brings water directly to the roots of plants, ensuring crops thrive even in the driest seasons. The results were encouraging: cucumbers, peppers, and tomatoes flourished, generating sales of D33,300 in the very first harvest and proving the model’s viability.</p>
+        <p>Our name, Weral Greenfield, symbolizes renewal and growth. We are driven by values of sustainability, inclusivity, and innovation, prioritizing youth and women in employment while blending traditional farming knowledge with modern technology. Today, Weral Greenfield operates as a fast-growing agritech venture, but at its heart, it remains a story of resilience, hope, and the belief that farming can be both profitable and sustainable.</p>
+        <ul>
+            <li>2025: Founding & Pilot Farm</li>
+            <li>2025: First Harvest</li>
+            <li>Future: Expansion</li>
+        </ul>
+    </section>
+
+    <section id="challenge">
+        <h2>The Challenge / Problem We Solve</h2>
+        <p>Agriculture is the backbone of The Gambia’s economy, employing over 70% of the population and contributing about a quarter of the national GDP. Yet, farmers—especially smallholders—face challenges that limit progress:</p>
+        <ul>
+            <li>Erratic rainfall worsened by climate change, leading to crop failures.</li>
+            <li>Inefficient irrigation, with traditional methods wasting huge amounts of water.</li>
+            <li>High fuel costs, as many rely on fuel-powered pumps for water supply.</li>
+            <li>Soil degradation, caused by overwatering and poor water management.</li>
+            <li>Food insecurity, with over 13% of Gambians lacking consistent access to nutritious meals.</li>
+        </ul>
+        <p>This combination traps farming families in cycles of low yields and poverty. Without intervention, the impacts of climate change will only intensify, further threatening livelihoods and national food security.</p>
+    </section>
+
+    <section id="solution">
+        <h2>Our Solution / Technology</h2>
+        <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/Screenshot_20250407-174112.jpg" alt="Solar-Powered Drip Irrigation System">
+        <p>Weral Greenfield offers a solar-powered automated drip irrigation system tailored to Gambian farmers’ needs. Here’s how it works:</p>
+        <ul>
+            <li>Direct water delivery: Water goes straight to the plant roots, reducing waste by up to 70%.</li>
+            <li>Solar-powered pumps: Eliminates reliance on expensive fuel or unreliable grid electricity.</li>
+            <li>Automated sensors: Measure soil moisture and adjust water flow in real time, ensuring crops get just what they need.</li>
+            <li>Scalable design: Suitable for small family farms or larger commercial plots.</li>
+            <li>Durable, low-maintenance parts: Built to withstand rural Gambian conditions.</li>
+        </ul>
+        <p>Beyond the technology, Weral Greenfield provides installation, training, and maintenance support, ensuring farmers not only receive a product but also gain the knowledge to maximize its benefits. Future upgrades include mobile app integration for remote monitoring.</p>
+        <p>This solution directly tackles water scarcity, high farming costs, and inconsistent yields—empowering farmers to produce more food, earn more income, and conserve the environment.</p>
+    </section>
+
+    <section id="market">
+        <h2>Market Opportunity</h2>
+        <p>The Gambia’s agriculture sector represents enormous untapped potential. With urbanization increasing demand for vegetables, tourism driving consumption in hotels and restaurants, and regional trade routes opening in West Africa, there is strong market demand for both fresh produce and sustainable farming technologies.</p>
+        <ul>
+            <li>Primary customers: Smallholder farmers who need affordable irrigation solutions.</li>
+            <li>Secondary customers: Supermarkets, hotels, restaurants, and institutions buying fresh produce.</li>
+            <li>Regional potential: Neighboring countries face similar climate and water challenges, creating expansion opportunities.</li>
+        </ul>
+        <p>By combining produce sales with technology licensing, Weral Greenfield positions itself at the intersection of food security, renewable energy, and sustainable development.</p>
+    </section>
+
+    <section id="business">
+        <h2>Business Model / Operations</h2>
+        <p>Weral Greenfield runs on a dual model:</p>
+        <ul>
+            <li>Food Production: Operating our pilot farm to produce and sell high-demand crops like cucumbers, peppers, and tomatoes.</li>
+            <li>Technology Sales: Providing solar-powered irrigation systems to farmers, along with training and support.</li>
+        </ul>
+        <p>This model ensures multiple income streams—produce for short-term revenue, and technology licensing for long-term scaling. Operations are lean, with a small full-time team and seasonal workers, ensuring efficiency while creating local jobs.</p>
+    </section>
+
+    <section id="team">
+        <h2>Team and Impact</h2>
+        <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/IMG-20250922-WA0000.jpg" alt="Weral Greenfield Team">
+        <p>At the core of Weral Greenfield is Fatoumatta Touray, founder and CEO, supported by a small but passionate team. Our hiring approach prioritizes youth and women, empowering the very groups often excluded from modern agriculture.</p>
+        <p>Our impact spans three dimensions:</p>
+        <ul>
+            <li>Economic: Job creation and increased farmer incomes.</li>
+            <li>Environmental: Water conservation, renewable energy use, and soil protection.</li>
+            <li>Social: Improved food security and healthier diets.</li>
+        </ul>
+        <p>Every farmer we train becomes part of a movement towards climate-smart agriculture in The Gambia.</p>
+        <h3>Impact Metrics:</h3>
+        <ul>
+            <li>Water saved: 70%</li>
+            <li>Farmers trained: 10+</li>
+            <li>Jobs created: 5</li>
+            <li>Yields increased: 50%</li>
+        </ul>
+    </section>
+
+    <section id="financials">
+        <h2>Financials and Funding</h2>
+        <ul>
+            <li>Initial Investment: D570,000</li>
+            <li>First Harvest Revenue: D33,300</li>
+            <li>First Harvest Profit: D5,300</li>
+        </ul>
+        <p>Looking forward, our projections are:</p>
+        <ul>
+            <li>Year 2 Revenue: D250,000</li>
+            <li>Year 5 Revenue: D1,000,000</li>
+        </ul>
+        <p>To accelerate growth, we are seeking D750,000 in funding for:</p>
+        <ul>
+            <li>Expanding land and production</li>
+            <li>Enhancing solar technology</li>
+            <li>Training more farmers</li>
+            <li>Marketing and distribution</li>
+        </ul>
+        <p>This investment will generate a 3x return within three years, while scaling impact across communities.</p>
+        <p>Line Graph: Revenue Growth from Year 1 to 5 (Placeholder)</p>
+        <p>Pie Chart: Funding Allocation (Placeholder)</p>
+    </section>
+
+    <section id="future">
+        <h2>Future Plans / Milestones</h2>
+        <ul>
+            <li>2026: Expand to 2 hectares, train 50 farmers</li>
+            <li>2027: Launch 5 sites, mobile monitoring</li>
+            <li>2028-2029: Scale to West Africa, carbon credits</li>
+            <li>2030: Regional leader in sustainable farming</li>
+        </ul>
+        <p>Our vision is bold yet achievable: By 2030, Weral Greenfield aims to be a regional leader in sustainable farming technology and food production, aligned with SDGs on hunger, clean energy, and climate action.</p>
+    </section>
+
+    <section id="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery">
+            <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/IMG-20250305-WA0007.jpg" alt="Harvest 1">
+            <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/IMG-20250921-WA0029.jpg" alt="Harvest 2">
+            <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/IMG-20250921-WA0031.jpg" alt="Training Session">
+            <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/WhatsApp-Image-2025-08-12-at-1.54.11-PM-690x1024.jpeg" alt="Community Activity 1">
+            <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/WhatsApp-Image-2025-08-12-at-1.55.34-PM-682x1024.jpeg" alt="Community Activity 2">
+            <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/WhatsApp-Image-2025-08-12-at-1.56.13-PM-1-768x1024.jpeg" alt="Farm Produce">
+            <img src="https://raw.githubusercontent.com/weralgreenfield-com-gm/.co.gm/main/WhatsApp-Image-2025-08-12-at-1.56.14-PM-1-768x1024.jpeg" alt="Irrigation System">
+        </div>
+        <p>Photos of harvests, training sessions, and community activities. Gallery expandable for future updates.</p>
+    </section>
+
+    <section id="news">
+        <h2>In the News</h2>
+        <p>Read about our journey and impact in this feature article:</p>
+        <a href="https://alkambatimes.com/fatoumatta-touray-blends-glamour-and-grit-to-revolutionize-farming-in-the-gambia/" target="_blank">Fatoumatta Touray Blends Glamour and Grit to Revolutionize Farming in The Gambia - Alkamba Times</a>
+    </section>
+
+    <section id="contact">
+        <h2>Contact / Join Us</h2>
+        <p>We believe in collaboration. Whether you are a farmer, investor, policymaker, or advocate, we invite you to connect with us.</p>
+        <p>📍 Visit us in Banyaaka, The Gambia</p>
+        <p>📧 Email: <a href="mailto:weralgreenfield2005@gmail.com">weralgreenfield2005@gmail.com</a></p>
+        <p>📞 Phone: +220 205 8944</p>
+        <p>💼 LinkedIn: <a href="https://www.linkedin.com/in/fatoumatta-touray" target="_blank">Fatoumatta Touray</a></p>
+        <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <p>Thank you! Your message has been sent to weralgreenfield2005@gmail.com.</p>
+    </section>
+
+    <footer>
+        <p>© 2025 Weral Greenfield. Together, let’s build a future where every farm is green, every family has food, and every innovation uplifts communities.</p>
+    </footer>
+</body>
+</html>
